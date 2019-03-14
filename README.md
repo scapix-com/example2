@@ -40,3 +40,12 @@ void test3()
     auto properties = java::lang::System::getProperties();
 }
 ```
+
+### Install
+
+```bash
+mkdir scapix
+cd scapix
+$ git clone https://github.com/scapix-com/example2
+$ git clone https://github.com/scapix-com/scapix
+```
