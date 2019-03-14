@@ -1,4 +1,4 @@
-# Example for `scapix::link::java` (C++ JNI) library
+# Example for [`scapix::link::java`](https://www.scapix.com/reference/java_library/link/) C++ JNI library
 
 ```cpp
 #include <scapix/java_api/java/lang/System.h>
