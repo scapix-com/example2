@@ -1,15 +1,26 @@
-cmake_minimum_required(VERSION 3.12)
-
-project(example2)
-
-set(scapix_bridge "java" CACHE STRING "cpp, java, objc, python")
-set(scapix_java_api "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
+cmake_minimum_required(VERSION 3.14)
 
 set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
 get_filename_component(PROJECT_ROOT ${PROJECT_ROOT} ABSOLUTE)
 
-set(SCAPIX_ROOT ${PROJECT_ROOT}/../scapix)
+set(SCAPIX_ROOT ${PROJECT_ROOT}/../scapix CACHE STRING "scapix lib path")
 get_filename_component(SCAPIX_ROOT ${SCAPIX_ROOT} ABSOLUTE)
+
+if("$ENV{HUNTER_ROOT}" STREQUAL "")
+    set(HUNTER_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/build/.hunter")
+endif()
+
+include("${SCAPIX_ROOT}/project/cmake/modules/HunterGate.cmake")
+
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.23.165.tar.gz"
+    SHA1 "5a73f91df5f6109c0bb1104d0c0ee423f7bece79"
+)
+
+project(example2 CXX)
+
+set(scapix_bridge "java" CACHE STRING "cpp, java, objc, python")
+set(scapix_java_api "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS
 	${PROJECT_ROOT}/source/*.*
@@ -24,7 +35,6 @@ set_target_properties(example2 PROPERTIES
     CXX_EXTENSIONS ON # not required, but speeds up compilation of SCAPIX_META_STRING with clang and gcc
 )
 
-set_target_properties(example2 PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(example2 PRIVATE ${PROJECT_ROOT}/source)
 target_compile_definitions(example2 PUBLIC SCAPIX_BRIDGE=${scapix_bridge})
 
