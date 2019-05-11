@@ -19,8 +19,8 @@ HunterGate(
 
 project(example2 CXX)
 
-set(scapix_bridge "java" CACHE STRING "cpp, java, objc, python")
-set(scapix_java_api "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
+set(SCAPIX_BRIDGE "java" CACHE STRING "cpp, java, objc, python")
+set(SCAPIX_JAVA_API "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS
 	${PROJECT_ROOT}/source/*.*
@@ -36,7 +36,7 @@ set_target_properties(example2 PROPERTIES
 )
 
 target_include_directories(example2 PRIVATE ${PROJECT_ROOT}/source)
-target_compile_definitions(example2 PUBLIC SCAPIX_BRIDGE=${scapix_bridge})
+target_compile_definitions(example2 PUBLIC SCAPIX_BRIDGE=${SCAPIX_BRIDGE})
 
 add_subdirectory(${SCAPIX_ROOT}/project/cmake ${PROJECT_BINARY_DIR}/scapix)
 target_link_libraries(example2 PRIVATE scapix)
