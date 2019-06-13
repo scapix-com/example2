@@ -38,5 +38,13 @@ set_target_properties(example2 PROPERTIES
 target_include_directories(example2 PRIVATE ${PROJECT_ROOT}/source)
 target_compile_definitions(example2 PUBLIC SCAPIX_BRIDGE=${SCAPIX_BRIDGE})
 
+find_package(JNI REQUIRED)
+target_include_directories(example2 PUBLIC ${JNI_INCLUDE_DIRS})
+target_link_libraries(example2 PUBLIC ${JNI_LIBRARIES})
+
+# Windows: jvm.dll needs to be in PATH (copying jvm.dll doesn't work)
+set_target_properties(example2 PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=%PATH%;${JAVA_INCLUDE_PATH}/../jre/bin/server")
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT example2)
+
 add_subdirectory(${SCAPIX_ROOT}/project/cmake ${PROJECT_BINARY_DIR}/scapix)
 target_link_libraries(example2 PRIVATE scapix)

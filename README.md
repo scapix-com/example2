@@ -1,4 +1,7 @@
-# Example for [`scapix::link::java`](https://www.scapix.com/documentation/java_link/) C++ JNI library
+# Example for [Scapix Java Link](https://www.scapix.com/documentation/java_link/)
+
+[Scapix Java Link](https://www.scapix.com/documentation/java_link/) is a modern C++17 wrapper for [JNI](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/).
+It provides type-safe APIs and automatic resource management, with ZERO runtime overhead compared to manually written JNI code.
 
 ```cpp
 #include <scapix/java_api/java/lang/System.h>
@@ -41,11 +44,19 @@ void test3()
 }
 ```
 
-### Install
+### Requirements
+
+- Git
+- CMake
+- JDK
+
+### Install and build (Windows, macOS, Linux)
 
 ```bash
-mkdir scapix
-cd scapix
+$ mkdir scapix
+$ cd scapix
 $ git clone https://github.com/scapix-com/example2
 $ git clone https://github.com/scapix-com/scapix
+$ cd example2/project
+$ ./default.sh
 ```

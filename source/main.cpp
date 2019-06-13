@@ -1,7 +1,16 @@
 /*
-    MacOS issues with JNI_CreateJavaVM:
-    1. Oracle's JDK doesn't advertise itself as supporting JNI. Edit /Library/Java/JavaVirtualMachines/<version>.jdk/Contents/Info.plist and add JNI as an option in JVMCapabilities.
-    2. When debugging in XCode, if you see SIGSEGV exception inside JNI_CreateJavaVM(), enter into debugger window: "pr h -s false SIGSEGV".
+	This example builds native C++ executable which creates JVM using JNI_CreateJavaVM() function.
+	The same functionality works in native C++ library loaded into JVM with System.loadLibrary().
+
+	JNI_CreateJavaVM() issues:
+
+	macOS:
+	- Oracle's JDK doesn't advertise itself as supporting JNI. Edit /Library/Java/JavaVirtualMachines/<version>.jdk/Contents/Info.plist and add JNI as an option in JVMCapabilities.
+	- When debugging in XCode, if you get SIGSEGV exception inside JNI_CreateJavaVM(), enter into debugger window: "pr h -s false SIGSEGV".
+
+	Windows:
+	- jvm.dll needs to be in PATH (copying jvm.dll doesn't work). You may need to adjust VS_DEBUGGER_ENVIRONMENT in CMakeLists.txt.
+	- When debugging in VS, if you get "0xC0000005: Access violation" exception inside JNI_CreateJavaVM(), ignore it and press "Continue".
 */
 
 #include <iostream>
