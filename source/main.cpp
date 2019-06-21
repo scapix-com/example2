@@ -64,7 +64,7 @@ void array_example()
 
 void array_enumeration_example()
 {
-	// object array
+	// object array: ref<java::lang::String[]>
 
 	for (auto&& i : java::util::Locale::getISOLanguages()->elements())
 	{
@@ -72,11 +72,11 @@ void array_enumeration_example()
 		i = java::lang::String::new_object();
 	}
 
-	// primitive array
+	// primitive array: ref<jbyte[]>
 
 	for (auto&& i : java::lang::System::getProperty("java.version")->getBytes()->elements())
 	{
-		i = 'A';
+		i = 5;
 	}
 }
 
