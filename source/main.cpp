@@ -62,6 +62,24 @@ void array_example()
             std::cout << string << "\n";
 }
 
+void array_enumeration_example()
+{
+	// object array
+
+	for (auto&& i : java::util::Locale::getISOLanguages()->elements())
+	{
+		auto length = i->length();
+		i = java::lang::String::new_object();
+	}
+
+	// primitive array
+
+	for (auto&& i : java::lang::System::getProperty("java.version")->getBytes()->elements())
+	{
+		i = 'A';
+	}
+}
+
 // This convert function is needed because java:util::Map uses generics and generated headers currently lack generics info.
 // I plan to improve this in the future, so conversion for any generics type will also be automatic (like in string/array examples above).
 
