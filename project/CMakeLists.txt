@@ -3,31 +3,26 @@ cmake_minimum_required(VERSION 3.14)
 set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
 get_filename_component(PROJECT_ROOT ${PROJECT_ROOT} ABSOLUTE)
 
-set(SCAPIX_ROOT ${PROJECT_ROOT}/../scapix CACHE STRING "scapix lib path")
-get_filename_component(SCAPIX_ROOT ${SCAPIX_ROOT} ABSOLUTE)
-
-if("$ENV{HUNTER_ROOT}" STREQUAL "")
-    set(HUNTER_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/build/.hunter")
-endif()
-
-include("${SCAPIX_ROOT}/project/cmake/modules/HunterGate.cmake")
-
-HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.214.tar.gz"
-    SHA1 "e14bc153a7f16d6a5eeec845fb0283c8fad8c358"
-)
-
 project(example2 CXX)
+
+set(CMODULE_CACHE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build/.cmodule CACHE PATH "")
+
+include(FetchContent)
+FetchContent_Declare(
+  cmodule
+  GIT_REPOSITORY https://github.com/scapix-com/cmodule.git
+  GIT_TAG        v1.0.0
+  GIT_SHALLOW    TRUE
+)
+FetchContent_MakeAvailable(cmodule)
 
 set(SCAPIX_BRIDGE "java" CACHE STRING "cpp, java, objc, python")
 set(SCAPIX_JAVA_API "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
 
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS
-	${PROJECT_ROOT}/source/*.*
-)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${PROJECT_ROOT}/source/*.*)
+source_group(TREE ${PROJECT_ROOT}/source PREFIX "source" FILES ${sources})
 
 add_executable(example2 ${sources})
-source_group(TREE ${PROJECT_ROOT}/source PREFIX "source" FILES ${sources})
 
 set_target_properties(example2 PROPERTIES
     CXX_STANDARD 17
@@ -46,5 +41,5 @@ target_link_libraries(example2 PUBLIC ${JNI_LIBRARIES})
 set_target_properties(example2 PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=%PATH%;${JAVA_INCLUDE_PATH}/../jre/bin/server")
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT example2)
 
-add_subdirectory(${SCAPIX_ROOT}/project/cmake ${PROJECT_BINARY_DIR}/scapix)
+find_package(Scapix REQUIRED)
 target_link_libraries(example2 PRIVATE scapix)
