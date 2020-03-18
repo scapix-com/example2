@@ -53,10 +53,7 @@ void test3()
 ### Install and build (Windows, macOS, Linux)
 
 ```bash
-$ mkdir scapix
-$ cd scapix
 $ git clone https://github.com/scapix-com/example2
-$ git clone https://github.com/scapix-com/scapix
 $ cd example2/project
 $ ./default.sh
 ```
