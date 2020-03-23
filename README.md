@@ -54,6 +54,6 @@ void test3()
 
 ```bash
 $ git clone https://github.com/scapix-com/example2
-$ cd example2/project
+$ cd example2
 $ ./default.sh
 ```
