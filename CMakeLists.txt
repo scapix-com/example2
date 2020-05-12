@@ -5,8 +5,8 @@ project(example2 CXX)
 include(FetchContent)
 FetchContent_Declare(
   cmodule
-  URL "https://github.com/scapix-com/cmodule/archive/v1.0.9.tar.gz"
-  URL_HASH SHA256=62023822a0272fa1485a6e931d83a9153609da027993ba1942137e4448c30c7d
+  URL "https://github.com/scapix-com/cmodule/archive/v1.0.11.tar.gz"
+  URL_HASH SHA256=2b27ea76d2cfad267aea917f257a790b17d613e39871bfcfce2f2298b210453c
 )
 FetchContent_MakeAvailable(cmodule)
 
