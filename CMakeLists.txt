@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(cmodule)
 set(SCAPIX_BRIDGE "java" CACHE STRING "cpp, java, objc, python")
 set(SCAPIX_JAVA_API "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
 
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS source/*.*)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS source/*)
 source_group(TREE source PREFIX "source" FILES ${sources})
 
 add_executable(example2 ${sources})
