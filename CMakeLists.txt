@@ -5,8 +5,8 @@ project(example2 CXX)
 include(FetchContent)
 FetchContent_Declare(
   cmodule
-  URL "https://github.com/scapix-com/cmodule/archive/v1.0.19.tar.gz"
-  URL_HASH SHA256=755bf9846b0626b4038e01e9ad413e27358f48ce9dbcfdee43917d21e6ee8fd9
+  URL "https://github.com/scapix-com/cmodule/archive/v1.0.20.tar.gz"
+  URL_HASH SHA256=5739c88952be9aa71d4ef51189fb0e725448615ed818e775d393f56738e5a8eb
 )
 FetchContent_MakeAvailable(cmodule)
 
@@ -17,12 +17,6 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS source/*.*)
 source_group(TREE source PREFIX "source" FILES ${sources})
 
 add_executable(example2 ${sources})
-
-set_target_properties(example2 PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS ON # not required, but speeds up compilation of SCAPIX_META_STRING with clang and gcc
-)
 
 target_include_directories(example2 PRIVATE source)
 
