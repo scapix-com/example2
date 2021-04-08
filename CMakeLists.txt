@@ -25,7 +25,8 @@ target_include_directories(example2 PUBLIC ${JNI_INCLUDE_DIRS})
 target_link_libraries(example2 PUBLIC ${JNI_LIBRARIES})
 
 # Windows: jvm.dll needs to be in PATH (copying jvm.dll doesn't work)
-set_target_properties(example2 PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=%PATH%;${JAVA_INCLUDE_PATH}/../jre/bin/server")
+find_path(JVM_DLL_PATH NAMES "jvm.dll" PATHS "${JAVA_INCLUDE_PATH}/../jre/bin/server" "${JAVA_INCLUDE_PATH}/../bin/server" NO_DEFAULT_PATH)
+set_target_properties(example2 PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=%PATH%;${JVM_DLL_PATH}")
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT example2)
 
 find_package(Scapix REQUIRED)
