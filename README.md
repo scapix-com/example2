@@ -1,6 +1,6 @@
-# Example for [Scapix Java Link](https://www.scapix.com/documentation/java_link/)
+# Example for [Scapix Java Link](https://www.scapix.com/java_link/)
 
-[Scapix Java Link](https://www.scapix.com/documentation/java_link/) is a modern C++17 wrapper for [JNI](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/).
+[Scapix Java Link](https://www.scapix.com/java_link/) is a modern C++17 wrapper for [JNI](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/).
 It provides type-safe APIs and automatic resource management, with ZERO runtime overhead compared to manually written JNI code.
 
 ```cpp
