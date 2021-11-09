@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.14)
 
 project(example2 CXX)
 
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS source/*)
+source_group(TREE source PREFIX "source" FILES ${sources})
+
+add_executable(example2 ${sources})
+target_include_directories(example2 PRIVATE source)
+
 include(FetchContent)
 FetchContent_Declare(
   cmodule
@@ -10,14 +16,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cmodule)
 
-set(SCAPIX_BRIDGE "java" CACHE STRING "cpp, java, objc, python")
-set(SCAPIX_JAVA_API "jdk-11.0.2" CACHE STRING "one of the folders inside 'scapix/java_api': jdk-11.0.2, android-28, etc.")
-
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS source/*)
-source_group(TREE source PREFIX "source" FILES ${sources})
-
-add_executable(example2 ${sources})
-target_include_directories(example2 PRIVATE source)
+set(SCAPIX_BRIDGE "java" CACHE STRING "")
+set(SCAPIX_JAVA_API "jdk-11.0.2" CACHE STRING "")
 
 find_package(Scapix REQUIRED)
 target_link_libraries(example2 PRIVATE scapix)
