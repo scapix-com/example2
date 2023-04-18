@@ -2,15 +2,18 @@
 	This example builds native C++ executable which creates JVM using JNI_CreateJavaVM() function.
 	The same functionality works in native C++ library loaded into JVM with System.loadLibrary().
 
-	JNI_CreateJavaVM() issues:
+	Windows: jvm.dll needs to be in PATH (copying jvm.dll doesn't work).
+	You may need to adjust VS_DEBUGGER_ENVIRONMENT in CMakeLists.txt.
 
-	macOS:
-	- Oracle's JDK doesn't advertise itself as supporting JNI. Edit /Library/Java/JavaVirtualMachines/<version>.jdk/Contents/Info.plist and add JNI as an option in JVMCapabilities.
-	- When debugging in XCode, if you get SIGSEGV exception inside JNI_CreateJavaVM(), enter into debugger window: "pr h -s false SIGSEGV".
+	Access violation when running in debugger:
 
-	Windows:
-	- jvm.dll needs to be in PATH (copying jvm.dll doesn't work). You may need to adjust VS_DEBUGGER_ENVIRONMENT in CMakeLists.txt.
-	- When debugging in VS, if you get "0xC0000005: Access violation" exception inside JNI_CreateJavaVM(), ignore it and press "Continue".
+	JNI_CreateJavaVM() intentionally raises (and catches) access violation exception.
+	Debugger (Visual Studio, XCode, etc.) will stop when this exception is raised.
+	You can configure debugger not to stop when access violation exception is raised,
+	or just ignore this exception and continue execution:
+
+	Visual Studio: press "Continue".
+	XCode: enter into debugger window: "pr h -s false SIGSEGV", then press "Continue".
 */
 
 #include <iostream>
@@ -100,9 +103,9 @@ void map_example()
 
 int main()
 {
-    JavaVMInitArgs vm_args;
+	JavaVMInitArgs vm_args;
 
-    vm_args.version = JNI_VERSION_1_6;
+	vm_args.version = JNI_VERSION_1_6;
 	vm_args.nOptions = 0;
 	vm_args.options = nullptr;
 	vm_args.ignoreUnrecognized = false;
