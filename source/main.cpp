@@ -101,10 +101,19 @@ void map_example()
 int main()
 {
     JavaVMInitArgs vm_args;
-    vm_args.version = JNI_VERSION_1_6;
-    JNI_GetDefaultJavaVMInitArgs(&vm_args);
 
-    scapix::link::java::create_vm(&vm_args);
+    vm_args.version = JNI_VERSION_1_6;
+	vm_args.nOptions = 0;
+	vm_args.options = nullptr;
+	vm_args.ignoreUnrecognized = false;
+
+	auto res = scapix::link::java::create_vm(&vm_args);
+
+	if (res != JNI_OK)
+	{
+		std::cout << "create vm failed: " << res << "\n";
+		return 1;
+	}
 
     string_example();
     array_example();
