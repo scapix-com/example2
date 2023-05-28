@@ -20,7 +20,7 @@ set(SCAPIX_BRIDGE "java" CACHE STRING "")
 set(SCAPIX_JAVA_API "jdk-11.0.2" CACHE STRING "")
 
 find_package(Scapix REQUIRED)
-target_compile_features(scapix INTERFACE cxx_std_20)
+target_compile_features(scapix PUBLIC cxx_std_20)
 target_link_libraries(example2 PRIVATE scapix)
 
 # Windows: jvm.dll needs to be in PATH (copying jvm.dll doesn't work)
