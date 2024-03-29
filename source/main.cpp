@@ -17,19 +17,27 @@
 */
 
 #include <iostream>
-#include <scapix/link/java/vm.h>
+
+#include <scapix/jni/vm.h>
+#include <scapix/jni/throwable.h>
+
+#include <scapix/java_api/java/lang/String.h>
 #include <scapix/java_api/java/lang/System.h>
 #include <scapix/java_api/java/util/Locale.h>
 #include <scapix/java_api/java/text/DateFormatSymbols.h>
 
-using namespace scapix::link::java;
+#include <scapix/java_api/java/io/File.h>
+#include <scapix/java_api/java/io/FileReader.h>
+#include <scapix/java_api/java/io/FileNotFoundException.h>
+
+namespace jni = scapix::jni;
 using namespace scapix::java_api;
 
 void string_example()
 {
 	// Prototype: ref<java::lang::String> getProperty(ref<java::lang::String>).
 	// Notice how C++ objects (strings in this case) are automatically converted to and from corresponding Java types.
-	// This works for any type supported by scapix::link::java::convert() interface, which supports many STL types and can be extended for your own types.
+	// This works for any type supported by scapix::jni::convert() interface, which supports many STL types and can be extended for your own types.
 
 	std::string version = java::lang::System::getProperty("java.version");
 
@@ -42,11 +50,11 @@ void array_example()
 	// Here, there is no conversion, you get JNI references:
 
 	auto a1 = java::util::Locale::getISOLanguages();
-	ref<array<java::lang::String>> a2 = java::util::Locale::getISOLanguages();
+	jni::ref<jni::array<java::lang::String>> a2 = java::util::Locale::getISOLanguages();
 
 	// Additional supported array type syntax (not for nested arrays, C++ doesn't allow T[][] type):
 
-	ref<java::lang::String[]> a3 = java::util::Locale::getISOLanguages();
+	jni::ref<java::lang::String[]> a3 = java::util::Locale::getISOLanguages();
 
 	// It is converted only if you assign such a reference to a corresponding C++ type:
 
@@ -55,7 +63,7 @@ void array_example()
 	for (auto lang : languages)
 		std::cout << lang << "\n";
 
-	// This works for any convertable types and any depth:
+	// This works for any convertible types and any depth:
 	// Prototype: ref<array<array<java::lang::String>>> getZoneStrings();
 
 	std::vector<std::vector<std::string>> zone_strings = java::text::DateFormatSymbols::getInstance()->getZoneStrings();
@@ -71,8 +79,8 @@ void array_enumeration_example()
 
 	for (auto&& i : java::util::Locale::getISOLanguages()->elements())
 	{
-		auto length = i->length();
-		i = java::lang::String::new_object();
+		[[maybe_unused]] auto length = i->length();
+		i = jni::new_object<java::lang::String>();
 	}
 
 	// primitive array: ref<jbyte[]>
@@ -86,9 +94,9 @@ void array_enumeration_example()
 // This convert function is needed because java:util::Map uses generics and generated headers currently lack generics info.
 // In a future version, generated headers will include generics info, so conversion for any generic type will also be automatic (like in string/array examples above).
 
-std::map<std::string, std::string> cvt(ref<java::util::Map> map)
+std::map<std::string, std::string> cvt(jni::ref<java::util::Map> map)
 {
-	return convert_cpp<std::map<std::string, std::string>>(ref<generic_type<map_class_name, string::class_name, string::class_name>>(map));
+	return jni::convert_cpp<std::map<std::string, std::string>>(jni::ref<jni::generic_type<jni::java_util_map, java::lang::String, java::lang::String>>(map));
 }
 
 void map_example()
@@ -101,28 +109,54 @@ void map_example()
 		std::cout << p.first << " = " << p.second << "\n";
 }
 
+void exception_example()
+{
+	try
+	{
+		auto file = jni::new_object<java::io::File>("/file.txt");
+		auto reader = jni::new_object<java::io::FileReader>(file);
+	}
+	catch (const jni::vm_exception& e)
+	{
+		if (auto io = e.instance_of<java::io::IOException>())
+		{
+		}
+
+		std::cout << e.what() << "\n";
+	}
+}
+
 int main()
 {
-	JavaVMInitArgs vm_args;
-
-	vm_args.version = JNI_VERSION_1_6;
-	vm_args.nOptions = 0;
-	vm_args.options = nullptr;
-	vm_args.ignoreUnrecognized = false;
-
-	auto res = scapix::link::java::create_vm(&vm_args);
-
-	if (res != JNI_OK)
+	JavaVMOption options[]
 	{
-		std::cout << "create vm failed: " << res << "\n";
+		{ const_cast<char*>("-Djava.class.path=" SCAPIX_JNI_JAR_FILE) },
+	};
+
+	JavaVMInitArgs vm_args
+	{
+		.version = JNI_VERSION_1_6,
+		.nOptions = std::size(options),
+		.options = options,
+		.ignoreUnrecognized = false,
+	};
+
+	try
+	{
+		jni::create_vm(&vm_args);
+
+		string_example();
+		array_example();
+		map_example();
+		exception_example();
+
+		jni::destroy_vm();
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << "\n";
 		return 1;
 	}
-
-	string_example();
-	array_example();
-	map_example();
-
-	scapix::link::java::destroy_vm();
 
 	return 0;
 }
