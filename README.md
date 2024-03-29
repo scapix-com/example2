@@ -1,41 +1,21 @@
-# Example for [Scapix Java Link](https://www.scapix.com/java_link/)
+# Example for [Scapix JNI](https://www.scapix.com/jni/)
 
-[Scapix Java Link](https://www.scapix.com/java_link/) is a modern C++17 wrapper for [JNI](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/).
+[Scapix JNI](https://www.scapix.com/jni/) is a modern C++20 wrapper for Java Native Interface ([JNI](https://docs.oracle.com/en/java/javase/21/docs/specs/jni/)).
 It provides type-safe APIs and automatic resource management, with ZERO runtime overhead compared to manually written JNI code.
 
 ```cpp
+// Generated C++ headers for all JDK/Android classes:
+
 #include <scapix/java_api/java/lang/System.h>
 #include <scapix/java_api/java/util/Locale.h>
 #include <scapix/java_api/java/text/DateFormatSymbols.h>
 
-using namespace scapix::link::java;
+namespace jni = scapix::jni;
 using namespace scapix::java_api;
 
-void test1()
+void example()
 {
-    // C++ objects are automatically converted to and from corresponding Java types.
-    // This works for any type supported by scapix::link::java::convert() interface,
-    // which supports many STL types and can be extended for your own types.
-
-    std::string version = java::lang::System::getProperty("java.version");
-    std::vector<std::string> languages = java::util::Locale::getISOLanguages();
-    std::vector<std::vector<std::string>> zone_strings = java::text::DateFormatSymbols::getInstance()->getZoneStrings();
-    std::map<std::string, std::string> properties = java::lang::System::getProperties();
-}
-
-void test2()
-{
-    // Conversion happens only when you request it, otherwise API works with JNI references:
-
-    ref<java::lang::String> version = java::lang::System::getProperty("java.version");
-    ref<array<java::lang::String>> languages = java::util::Locale::getISOLanguages();
-    ref<array<array<java::lang::String>>> zone_strings = java::text::DateFormatSymbols::getInstance()->getZoneStrings();
-    ref<java::util::Map> properties = java::lang::System::getProperties();
-}
-
-void test3()
-{
-    // Same as above, no conversion to C++ types:
+    // call any Java functions from any Java classes
 
     auto version = java::lang::System::getProperty("java.version");
     auto languages = java::util::Locale::getISOLanguages();
@@ -44,13 +24,7 @@ void test3()
 }
 ```
 
-### Requirements
-
-- Git
-- CMake
-- JDK
-
-### Install and build (Windows, macOS, Linux)
+### Install and build this example (Windows, macOS, Linux)
 
 ```bash
 $ git clone https://github.com/scapix-com/example2
