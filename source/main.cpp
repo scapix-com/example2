@@ -118,8 +118,13 @@ void exception_example()
 	}
 	catch (const jni::vm_exception& e)
 	{
-		if (auto io = e.instance_of<java::io::IOException>())
+		if (auto file_not_found = e.instance_of<java::io::FileNotFoundException>())
 		{
+			// handle specifically java::io::FileNotFoundException
+		}
+		else if (auto io = e.instance_of<java::io::IOException>())
+		{
+			// handle any java::io::IOException
 		}
 
 		std::cout << e.what() << "\n";
