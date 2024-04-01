@@ -1,16 +1,9 @@
 /*
-	This example builds native C++ executable which creates JVM using JNI_CreateJavaVM() function.
-	The same functionality works in native C++ library loaded into JVM with System.loadLibrary().
-
-	Windows: jvm.dll needs to be in PATH (copying jvm.dll doesn't work).
-	You may need to adjust VS_DEBUGGER_ENVIRONMENT in CMakeLists.txt.
-
 	Access violation when running in debugger:
 
-	JNI_CreateJavaVM() intentionally raises (and catches) access violation exception.
-	Debugger (Visual Studio, XCode, etc.) will stop when this exception is raised.
-	You can configure debugger not to stop when access violation exception is raised,
-	or just ignore this exception and continue execution:
+	JVM intentionally raises (and catches) access violation exceptions.
+
+ 	Configure debugger to ignore such exceptions or continue using these steps:
 
 	Visual Studio: press "Continue".
 	XCode: enter into debugger window: "pr h -s false SIGSEGV", then press "Continue".
