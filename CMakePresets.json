@@ -1,0 +1,34 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "default",
+      "binaryDir": "${sourceDir}/build/${presetName}"
+    },
+    {
+      "name": "xcode",
+      "inherits": [ "default" ],
+      "generator": "Xcode"
+    },
+    {
+      "name": "vs2019",
+      "inherits": [ "default" ],
+      "generator": "Visual Studio 16 2019"
+    },
+    {
+      "name": "vs2019-clang",
+      "inherits": [ "vs2019" ],
+      "toolset": "clangcl"
+    },
+    {
+      "name": "vs2022",
+      "inherits": [ "default" ],
+      "generator": "Visual Studio 17 2022"
+    },
+    {
+      "name": "vs2022-clang",
+      "inherits": [ "vs2022" ],
+      "toolset": "clangcl"
+    }
+  ]
+}

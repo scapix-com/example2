@@ -29,5 +29,5 @@ void example()
 ```bash
 $ git clone https://github.com/scapix-com/example2
 $ cd example2
-$ ./default.sh
+$ ./build.sh default
 ```
