@@ -16,6 +16,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cmodule)
 
+# optionally override API selection
+# set(SCAPIX_JAVA_API "jdk-11" CACHE STRING "" FORCE)
+
 find_package(ScapixJavaAPI REQUIRED)
 target_link_libraries(example2 PRIVATE scapix::java_api)
 scapix_java_api_source_group()
