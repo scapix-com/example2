@@ -3,4 +3,5 @@ if [ -z $1 ]; then
   exit 1
 fi
 
-cmake --preset $1 && cmake --build build/$1 --parallel
+cmake --preset $1 || exit 1
+cmake --build build/$1 --parallel || exit 1
